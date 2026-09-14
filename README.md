@@ -3,11 +3,14 @@ a tetris clone written in rust
 
 ## ideas:
 ```
+pub struct pos{
+    int:x,
+    int:y,
+}
+
 pub struct Block{
-    pub data:[[bool;3];3],
+    pub data:[pos;3],
     (pub SDL_IMAGE),
-    pub texture:SDL_TEXTURE,
-    pub rect:SDL_RECT,
     pub speed: int / pub speed_up:bool,
 }
 impl Block{
