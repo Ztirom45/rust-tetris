@@ -4,15 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-rand = "0.10"
+rand = "0.8"
 
 [dependencies.sdl2]
 version = "0.38"
 default-features = false
 features = ["ttf"]
-optional = true
 
-[features]
-default = ["head"]
-headless = []      # Headless mode (no graphics and user input)
-head = ["sdl2"] 
