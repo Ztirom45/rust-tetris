@@ -52,31 +52,3 @@ impl Add for FPos{
     }
 }
 
-
-
-pub const BLOCK_CONSTALATIONS_LEN:usize = 6;
-pub const BLOCK_CONSTALATIONS:[[FPos;4];BLOCK_CONSTALATIONS_LEN] = [
-    // ##
-    // ##
-    [FPos{x:0.0,y:0.0},FPos{x:0.0,y:1.0},FPos{x:1.0,y:0.0},FPos{x:1.0,y:1.0}],
-    
-    // #####
-    [FPos{x:0.0,y:0.0},FPos{x:1.0,y:0.0},FPos{x:2.0,y:0.0},FPos{x:3.0,y:0.0}],
-    
-    // #
-    // ###
-    [FPos{x:0.0,y:0.0},FPos{x:1.0,y:0.0},FPos{x:1.0,y:1.0},FPos{x:1.0,y:2.0}],
-
-    //   #
-    // ###
-    [FPos{x:0.0,y:2.0},FPos{x:1.0,y:0.0},FPos{x:1.0,y:1.0},FPos{x:1.0,y:2.0}],
-    
-    //  ##
-    // ##
-    [FPos{x:0.0,y:1.0},FPos{x:0.0,y:2.0},FPos{x:1.0,y:0.0},FPos{x:1.0,y:1.0}],
-
-    // ##
-    //  ##
-    [FPos{x:0.0,y:1.0},FPos{x:0.0,y:0.0},FPos{x:1.0,y:2.0},FPos{x:1.0,y:1.0}],
-];
-

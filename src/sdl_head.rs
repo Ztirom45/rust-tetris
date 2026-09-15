@@ -48,17 +48,19 @@ pub fn sdl_handle_events(game:&mut Game, event_pump:&mut EventPump) -> bool{
                 keycode: Some(Keycode::A),
                 ..
             } => {
-                if game.current_block.pos.x > 0.0{
-                    game.current_block.pos.x -= 1.0;
-                }
+                game.current_block.move_left();
             }
              Event::KeyDown{
                 keycode: Some(Keycode::D),
                 ..
             } => {
-                if (game.current_block.pos.x as i32) < (BLOCK_W as i32 - 2){
-                    game.current_block.pos.x += 1.0;
-                }
+                game.current_block.move_right();
+            }
+            Event::KeyDown{
+                keycode: Some(Keycode::W),
+                ..
+            } => {
+                game.current_block.rotate_right();
             }               
 
             _ => (),

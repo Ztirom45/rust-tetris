@@ -4,7 +4,7 @@ use crate::config::*;
 use crate::block::*;
 
 pub struct Game{
-    pub current_block:Block,
+    pub current_block:MovebleTile,
     //pub keyboard_heandler,
     pub placed_blocks:[[Option<Color>;BLOCK_W];BLOCK_H],
 }
@@ -12,7 +12,7 @@ pub struct Game{
 impl Game{
     pub fn new()-> Self{
         Self{
-            current_block:Block::random_new(),
+            current_block:MovebleTile::random_new(),
             placed_blocks:[[None;BLOCK_W];BLOCK_H],
 
         }
