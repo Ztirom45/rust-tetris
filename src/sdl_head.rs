@@ -1,5 +1,6 @@
-use sdl2::{EventPump, event::Event, keyboard::Keycode, pixels::Color, rect::Point, render::Canvas, sys::Window};
+use sdl2::{EventPump, event::Event, keyboard::{Keycode, Scancode}, pixels::Color, rect::Point, render::Canvas, sys::Window};
 
+use crate::config::*;
 use crate::game::*;
 
 pub fn sdl_draw_game(game:&Game,canvas: &mut sdl2::render::Canvas<sdl2::video::Window>){
@@ -28,7 +29,14 @@ pub fn sdl_draw_game(game:&Game,canvas: &mut sdl2::render::Canvas<sdl2::video::W
         
 }
 
-pub fn sdl_handle_events(event_pump:&mut EventPump) -> bool{
+pub fn sdl_handle_events(game:&mut Game, event_pump:&mut EventPump) -> bool{
+    //speed up downward Movement
+    if event_pump.keyboard_state().is_scancode_pressed(Scancode::S){
+        game.current_block.speed = SPEED_UP; 
+    }else{
+        game.current_block.speed = NORMAL_SPEED;
+    }
+
     for event in event_pump.poll_iter() {
         match event {
             Event::Quit { .. }
@@ -36,6 +44,23 @@ pub fn sdl_handle_events(event_pump:&mut EventPump) -> bool{
                 keycode: Some(Keycode::Escape),
                 ..
             } => return true,
+            Event::KeyDown{
+                keycode: Some(Keycode::A),
+                ..
+            } => {
+                if game.current_block.pos.x > 0.0{
+                    game.current_block.pos.x -= 1.0;
+                }
+            }
+             Event::KeyDown{
+                keycode: Some(Keycode::D),
+                ..
+            } => {
+                if (game.current_block.pos.x as i32) < (BLOCK_W as i32 - 2){
+                    game.current_block.pos.x += 1.0;
+                }
+            }               
+
             _ => (),
         }
     }

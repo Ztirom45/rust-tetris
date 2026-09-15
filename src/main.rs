@@ -37,7 +37,7 @@ fn main()  -> Result<(), String> {
     
     //run game
     'running:loop{
-        if sdl_handle_events(&mut event_pump) {
+        if sdl_handle_events(&mut game, &mut event_pump) {
             break 'running;
         }
         game.update();
