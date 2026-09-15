@@ -5,10 +5,11 @@ use sdl2::pixels::Color;
 mod config;
 mod block;
 mod game;
+mod sdl_head;
 
 use crate::config::*;
 use crate::game::*;
-
+use crate::sdl_head::*;
 
 
 fn main()  -> Result<(), String> {
@@ -30,7 +31,16 @@ fn main()  -> Result<(), String> {
     let mut event_pump = sdl_context.event_pump()?; 
 
 
-    let mut game:Game = Game::new(&mut canvas,&mut event_pump);
-    game.run();
+    let mut game:Game = Game::new();
+    
+    //run game
+    'running:loop{
+        if sdl_handle_events(&mut event_pump) {
+            break 'running;
+        }
+        sdl_draw_game(&game,&mut canvas);
+        game.update();
+    }
+
     Ok(())
 }
