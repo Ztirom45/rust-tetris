@@ -1,9 +1,13 @@
+use std::ops::Add;
+
 use sdl2::{pixels::Color, rect::Point};
 
-pub const SCREEN_W:u32 = 600;
+pub const SCREEN_W:u32 = 500;
 pub const SCREEN_H:u32 = 1200;
-pub const BLOCK_W:usize = 8;
-pub const BLOCK_H:usize = 16;
+pub const BLOCK_W:usize = 10;
+pub const BLOCK_H:usize = 24;
+
+pub const NORMAL_SPEED:f32 = 0.05;
 
 pub const BLOCK_COLORS_LEN:usize = 5;
 pub const BLOCK_COLORS:[Color;BLOCK_COLORS_LEN] = [
@@ -20,42 +24,58 @@ pub struct Pos{//mutible point that can be parsed to a imutable sdl drawble poin
     pub y: i32,
 }
 
-impl Pos{
-    pub fn new() -> Self{
-        Self{x:0,y:0}
-    }
+#[derive(Debug, Copy, Clone, PartialEq)]
+pub struct FPos{//mutible point that can be parsed to a imutable sdl drawble point
+    pub x: f32,
+    pub y: f32,
 }
+
 impl From<Pos> for Point{
     fn from(pos: Pos) -> Self{
         Point::new(pos.x,pos.y)
+    }
+}
+impl From<FPos> for Point{
+    fn from(pos: FPos) -> Self{
+        Point::new(pos.x as i32,pos.y as i32)
+    }
+}
+
+impl Add for FPos{ 
+    type Output = Self;
+    fn add(self,other:Self) -> Self{
+        Self{
+            x:self.x+other.x,
+            y:self.y+other.y,
+        }
     }
 }
 
 
 
 pub const BLOCK_CONSTALATIONS_LEN:usize = 6;
-pub const BLOCK_CONSTALATIONS:[[Pos;4];BLOCK_CONSTALATIONS_LEN] = [
+pub const BLOCK_CONSTALATIONS:[[FPos;4];BLOCK_CONSTALATIONS_LEN] = [
     // ##
     // ##
-    [Pos{x:0,y:0},Pos{x:0,y:1},Pos{x:1,y:0},Pos{x:1,y:1}],
+    [FPos{x:0.0,y:0.0},FPos{x:0.0,y:1.0},FPos{x:1.0,y:0.0},FPos{x:1.0,y:1.0}],
     
     // #####
-    [Pos{x:0,y:0},Pos{x:1,y:0},Pos{x:2,y:0},Pos{x:3,y:0}],
+    [FPos{x:0.0,y:0.0},FPos{x:1.0,y:0.0},FPos{x:2.0,y:0.0},FPos{x:3.0,y:0.0}],
     
     // #
     // ###
-    [Pos{x:0,y:0},Pos{x:1,y:0},Pos{x:1,y:1},Pos{x:1,y:2}],
+    [FPos{x:0.0,y:0.0},FPos{x:1.0,y:0.0},FPos{x:1.0,y:1.0},FPos{x:1.0,y:2.0}],
 
     //   #
     // ###
-    [Pos{x:0,y:2},Pos{x:1,y:0},Pos{x:1,y:1},Pos{x:1,y:2}],
+    [FPos{x:0.0,y:2.0},FPos{x:1.0,y:0.0},FPos{x:1.0,y:1.0},FPos{x:1.0,y:2.0}],
     
     //  ##
     // ##
-    [Pos{x:0,y:1},Pos{x:0,y:2},Pos{x:1,y:0},Pos{x:1,y:1}],
+    [FPos{x:0.0,y:1.0},FPos{x:0.0,y:2.0},FPos{x:1.0,y:0.0},FPos{x:1.0,y:1.0}],
 
     // ##
     //  ##
-    [Pos{x:0,y:1},Pos{x:0,y:0},Pos{x:1,y:2},Pos{x:1,y:1}],
+    [FPos{x:0.0,y:1.0},FPos{x:0.0,y:0.0},FPos{x:1.0,y:2.0},FPos{x:1.0,y:1.0}],
 ];
 

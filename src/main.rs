@@ -1,5 +1,7 @@
 extern crate sdl2;
 
+use std::time::Duration;
+
 use sdl2::pixels::Color;
 
 mod config;
@@ -17,7 +19,7 @@ fn main()  -> Result<(), String> {
     let sdl_context = sdl2::init()?;
     let video_subsystem = sdl_context.video()?;
     let window = video_subsystem
-        .window("rusty SpaceGame", SCREEN_W, SCREEN_H)
+        .window("rusty Tetris", SCREEN_W, SCREEN_H)
         .position_centered()
         .opengl()
         .build()
@@ -38,8 +40,9 @@ fn main()  -> Result<(), String> {
         if sdl_handle_events(&mut event_pump) {
             break 'running;
         }
-        sdl_draw_game(&game,&mut canvas);
         game.update();
+        sdl_draw_game(&game,&mut canvas);
+        std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 30));
     }
 
     Ok(())

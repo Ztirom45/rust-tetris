@@ -6,16 +6,18 @@ use rand::{thread_rng, Rng};
                               
 #[derive(Copy,Clone)]
 pub struct Block{
-    pub block_positions:[Pos;4],
-    pub speed: i32,
+    pub block_positions:[FPos;4],
+    pub pos:FPos,
+    pub speed: f32,
     pub color: Color,
 }
 
 impl Block{
     pub fn new()->Block{
         Block{
-            block_positions:[Pos{x:0,y:0};4],
-            speed:1,
+            block_positions:[FPos{x:0.0,y:0.0};4],
+            pos:FPos{x:0.0,y:0.0},
+            speed:NORMAL_SPEED,
             color:Color::RGB(255, 0, 0),
         }
     }
@@ -24,15 +26,15 @@ impl Block{
         let mut rng = thread_rng();
         Self{
             block_positions:BLOCK_CONSTALATIONS[rng.gen_range(0..BLOCK_CONSTALATIONS_LEN)],
-            speed:1,
+            pos:FPos{x:rng.gen_range(0..BLOCK_W as i32-4) as f32,y:0.0},
+            speed:NORMAL_SPEED,
             color:BLOCK_COLORS[rng.gen_range(0..BLOCK_COLORS_LEN)],
         }
     }
-    pub fn update(&mut self,game:Game){
-        for mut block_pos in self.block_positions{
-            block_pos.y -= 1;
-        }
+    pub fn update(&mut self){
+        self.pos.y +=self.speed;
     }
+
     pub fn rotate(){}
     pub fn check_collision(/*placed_blocks*/){}
 }

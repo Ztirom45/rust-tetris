@@ -15,5 +15,7 @@ impl Game{
 
         }
     }
-    pub fn update(&self){}
+    pub fn update(&mut self){
+        self.current_block.update();
+    }
 }
