@@ -6,7 +6,7 @@ use rand::{thread_rng, Rng};
                               
 #[derive(Copy,Clone)]
 pub struct Block{
-    pub block_positions:[Point;4],
+    pub block_positions:[Pos;4],
     pub speed: i32,
     pub color: Color,
 }
@@ -14,12 +14,12 @@ pub struct Block{
 impl Block{
     pub fn new()->Block{
         Block{
-            block_positions:[Point::new(0,0);4],
+            block_positions:[Pos{x:0,y:0};4],
             speed:1,
             color:Color::RGB(255, 0, 0),
         }
     }
-
+    
     pub fn random_new()->Self{
         let mut rng = thread_rng();
         Self{
@@ -35,7 +35,7 @@ impl Block{
     }
     pub fn draw(&self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>){
         canvas.set_draw_color(self.color);
-        canvas.draw_points(self.block_positions.as_slice()).unwrap();
+        canvas.draw_points(self.block_positions.map(Into::into).as_slice()).unwrap();
     }
     pub fn rotate(){}
     pub fn check_collision(/*placed_blocks*/){}

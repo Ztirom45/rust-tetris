@@ -14,30 +14,48 @@ pub const BLOCK_COLORS:[Color;BLOCK_COLORS_LEN] = [
     Color::RGB(255, 255, 0)
 ];
 
+#[derive(Clone, Copy)]
+pub struct Pos{//mutible point that can be parsed to a imutable sdl drawble point
+    pub x: i32,
+    pub y: i32,
+}
+
+impl Pos{
+    pub fn new() -> Self{
+        Self{x:0,y:0}
+    }
+}
+impl From<Pos> for Point{
+    fn from(pos: Pos) -> Self{
+        Point::new(pos.x,pos.y)
+    }
+}
+
+
 
 pub const BLOCK_CONSTALATIONS_LEN:usize = 6;
-pub const BLOCK_CONSTALATIONS:[[Point;4];BLOCK_CONSTALATIONS_LEN] = [
+pub const BLOCK_CONSTALATIONS:[[Pos;4];BLOCK_CONSTALATIONS_LEN] = [
     // ##
     // ##
-    [Point::new(0,0),Point::new(0,1),Point::new(1,0),Point::new(1,0)],
+    [Pos{x:0,y:0},Pos{x:0,y:1},Pos{x:1,y:0},Pos{x:1,y:1}],
     
     // #####
-    [Point::new(0,0),Point::new(1,0),Point::new(2,0),Point::new(3,0)],
+    [Pos{x:0,y:0},Pos{x:1,y:0},Pos{x:2,y:0},Pos{x:3,y:0}],
     
     // #
     // ###
-    [Point::new(0,0),Point::new(1,0),Point::new(1,1),Point::new(1,2)],
+    [Pos{x:0,y:0},Pos{x:1,y:0},Pos{x:1,y:1},Pos{x:1,y:2}],
 
     //   #
     // ###
-    [Point::new(0,2),Point::new(1,0),Point::new(1,1),Point::new(1,2)],
+    [Pos{x:0,y:2},Pos{x:1,y:0},Pos{x:1,y:1},Pos{x:1,y:2}],
     
     //  ##
     // ##
-    [Point::new(0,1),Point::new(0,2),Point::new(1,0),Point::new(1,1)],
+    [Pos{x:0,y:1},Pos{x:0,y:2},Pos{x:1,y:0},Pos{x:1,y:1}],
 
     // ##
     //  ##
-    [Point::new(0,1),Point::new(0,0),Point::new(1,2),Point::new(1,1)],
+    [Pos{x:0,y:1},Pos{x:0,y:0},Pos{x:1,y:2},Pos{x:1,y:1}],
 ];
 
