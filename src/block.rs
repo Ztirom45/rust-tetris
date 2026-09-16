@@ -1,3 +1,5 @@
+use std::iter::zip;
+
 use sdl2::pixels::Color;
 use sdl2::rect::Point;
 use crate::config::*;
@@ -102,7 +104,7 @@ impl MovebleTile{
         if ((self.pos.x+self.width) as i32) < (BLOCK_W as i32){
                 self.pos.x += 1.0;
                 //collision with other blocks check
-                if self.check_collision(){
+                if self.check_collision(placed_blocks){
                     self.pos.x-=1.0;
                 }
         }
@@ -113,7 +115,7 @@ impl MovebleTile{
         if self.pos.x > 0.0{
                 self.pos.x -= 1.0;
                 //collision with other blocks check
-                if self.check_collision(){
+                if self.check_collision(placed_blocks){
                     self.pos.x-=1.0;
                 }
 
@@ -121,7 +123,7 @@ impl MovebleTile{
 
     }
 
-    pub fn rotate_right(&mut self){
+    pub fn rotate_right(&mut self, placed_blocks:&mut [[Option<Color>;BLOCK_W];BLOCK_H]){
         //check if rotating, which means swaping width and height would let a part leave the
         //game border
         //TODO: collision with other parts 
@@ -131,14 +133,17 @@ impl MovebleTile{
 
         let old_height = self.height;
         let old_width = self.width;
-        for pos in self.block_positions.iter_mut(){
-            let old_pos_x = pos.x;
-            let old_pos_y = pos.y;
-            pos.y = old_pos_x;
-            pos.x = old_height-1.0-old_pos_y;
-            println!("old_y:{} height:{} new_x:{}",old_pos_y,old_height,pos.x);
-            println!("old_x:{} old_width:{} new_y:{}",old_pos_x,old_width,pos.y);
+        let mut old_block_positions:[FPos;4] = self.block_positions;
+        for (new_pos,old_pos) in zip(self.block_positions.as_mut(),old_block_positions){
+            new_pos.y = old_pos.x;
+            new_pos.x = old_height-1.0-old_pos.y;
         }
+        //check if the rotated block colides with existing blocks
+        if self.check_collision(placed_blocks){
+            self.block_positions = old_block_positions;
+            return;
+        }
+        //else swap width and height
         self.height = old_width;
         self.width = old_height;
     }

@@ -47,19 +47,19 @@ pub fn sdl_handle_events(game:&mut Game, event_pump:&mut EventPump) -> bool{
                 keycode: Some(Keycode::A),
                 ..
             } => {
-                game.current_block.move_left();
+                game.current_block.move_left(&mut game.placed_blocks);
             }
              Event::KeyDown{
                 keycode: Some(Keycode::D),
                 ..
             } => {
-                game.current_block.move_right();
+                game.current_block.move_right(&mut game.placed_blocks);
             }
             Event::KeyDown{
                 keycode: Some(Keycode::W),
                 ..
             } => {
-                game.current_block.rotate_right();
+                game.current_block.rotate_right(&mut game.placed_blocks);
             }               
 
             _ => (),
