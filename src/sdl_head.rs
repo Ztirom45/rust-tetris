@@ -14,7 +14,6 @@ pub fn sdl_draw_game(game:&Game,canvas: &mut sdl2::render::Canvas<sdl2::video::W
                 match row{
                     Some(color) => {
                         canvas.set_draw_color(color.clone());
-                        println!("x:{} y:{}",x,y);
                         canvas.draw_point(Point::new(x as i32,y as i32)).unwrap();
                     },
                     None => ()

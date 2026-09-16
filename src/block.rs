@@ -26,7 +26,7 @@ pub const BLOCK_CONSTALATIONS:[Tile;BLOCK_CONSTALATIONS_LEN] = [
 
     //   #
     // ###
-    Tile{block_positions:[FPos{x:2.0,y:0.0},FPos{x:1.0,y:0.0},FPos{x:1.0,y:1.0},FPos{x:2.0,y:1.0}],width:3.0,height:2.0},
+    Tile{block_positions:[FPos{x:2.0,y:0.0},FPos{x:0.0,y:1.0},FPos{x:1.0,y:1.0},FPos{x:2.0,y:1.0}],width:3.0,height:2.0},
     
     //  ##
     // ##
@@ -126,7 +126,9 @@ impl MovebleTile{
             let old_pos_x = pos.x;
             let old_pos_y = pos.y;
             pos.y = old_pos_x;
-            pos.x = old_height-old_pos_y;
+            pos.x = old_height-1.0-old_pos_y;
+            println!("old_y:{} height:{} new_x:{}",old_pos_y,old_height,pos.x);
+            println!("old_x:{} old_width:{} new_y:{}",old_pos_x,old_width,pos.y);
         }
         self.height = old_width;
         self.width = old_height;
