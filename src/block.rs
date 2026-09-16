@@ -96,6 +96,33 @@ impl MovebleTile{
                 let real_pos_y = (pos.y+self.pos.y-1.0) as usize;
                 placed_blocks[real_pos_y][real_pos_x] = Some(self.color);
             }
+            //check for complete rows
+            let mut number_completed_rows:usize = 0;
+            let mut highest_index_completed_row_index:usize = 0;
+            for y in self.pos.y as usize..(((self.pos.y+self.height)) as usize).min(BLOCK_H){
+                let mut completed_row = true;
+                for x in 0..BLOCK_W{
+                    if placed_blocks[y][x] == None{
+                        completed_row = false;
+                        break;
+                    }
+                }
+                if completed_row{
+                    number_completed_rows +=1;
+                    highest_index_completed_row_index = y
+                }
+            }
+            //remove completed rows
+            
+            for y in (number_completed_rows..highest_index_completed_row_index+1).rev(){
+                println!("{} {}",y,y-number_completed_rows);
+                placed_blocks[y] = placed_blocks[y-number_completed_rows];
+            }
+            //fill new empty top rows
+            for y in 0..number_completed_rows{
+                placed_blocks[y] = [None;BLOCK_W];
+            }
+
             self.random_reset();
         }
     }

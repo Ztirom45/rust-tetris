@@ -7,7 +7,7 @@ pub const SCREEN_H:u32 = 1200;
 pub const BLOCK_W:usize = 10;
 pub const BLOCK_H:usize = 24;
 
-pub const NORMAL_SPEED:f32 = 0.2;
+pub const NORMAL_SPEED:f32 = 0.1;
 pub const SPEED_UP:f32 = 0.5;
 
 pub const BLOCK_COLORS_LEN:usize = 5;
