@@ -98,16 +98,25 @@ impl MovebleTile{
         }
     }
     
-    pub fn move_right(&mut self){
+    pub fn move_right(&mut self,placed_blocks:&mut [[Option<Color>;BLOCK_W];BLOCK_H]){
         if ((self.pos.x+self.width) as i32) < (BLOCK_W as i32){
                 self.pos.x += 1.0;
+                //collision with other blocks check
+                if self.check_collision(){
+                    self.pos.x-=1.0;
+                }
         }
 
     }
  
-    pub fn move_left(&mut self){
+    pub fn move_left(&mut self,placed_blocks:&mut [[Option<Color>;BLOCK_W];BLOCK_H]){
         if self.pos.x > 0.0{
                 self.pos.x -= 1.0;
+                //collision with other blocks check
+                if self.check_collision(){
+                    self.pos.x-=1.0;
+                }
+
         }
 
     }
