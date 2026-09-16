@@ -37,13 +37,15 @@ fn main()  -> Result<(), String> {
     
     //run game
     'running:loop{
-        if sdl_handle_events(&mut game, &mut event_pump) {
+        if sdl_handle_events(&mut game, &mut event_pump){
             break 'running;
         }
-        game.update();
+        if game.update(){
+            break 'running;
+        }
         sdl_draw_game(&game,&mut canvas);
         std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 30));
     }
-
+    println!("score: {}",game.score);
     Ok(())
 }

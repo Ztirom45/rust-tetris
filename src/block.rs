@@ -86,47 +86,61 @@ impl MovebleTile{
         self.color = BLOCK_COLORS[rng.gen_range(0..BLOCK_COLORS_LEN)];
 
     }
-
-    pub fn update(&mut self,placed_blocks:&mut [[Option<Color>;BLOCK_W];BLOCK_H]){
+    
+    //returns if the game should continue
+    // false -> continue; true -> stop
+    pub fn update(&mut self,placed_blocks:&mut [[Option<Color>;BLOCK_W];BLOCK_H], score:&mut usize) -> bool{
         self.pos.y +=self.speed;
         if self.check_collision(placed_blocks){
             //place block
             for pos in self.block_positions{
-                let real_pos_x = (pos.x+self.pos.x) as usize;
-                let real_pos_y = (pos.y+self.pos.y-1.0) as usize;
-                placed_blocks[real_pos_y][real_pos_x] = Some(self.color);
-            }
-            //check for complete rows
-            let mut number_completed_rows:usize = 0;
-            let mut highest_index_completed_row_index:usize = 0;
-            for y in self.pos.y as usize..(((self.pos.y+self.height)) as usize).min(BLOCK_H){
-                let mut completed_row = true;
-                for x in 0..BLOCK_W{
-                    if placed_blocks[y][x] == None{
-                        completed_row = false;
-                        break;
-                    }
+                let real_pos_x = (pos.x+self.pos.x);
+                let real_pos_y = (pos.y+self.pos.y-1.0);
+                
+                //cheak if a block is place above the upper border
+                //if so: stop game
+                if real_pos_y < 0.0{
+                    return true;
                 }
-                if completed_row{
-                    number_completed_rows +=1;
-                    highest_index_completed_row_index = y
-                }
+
+                placed_blocks[real_pos_y as usize][real_pos_x as usize] = Some(self.color);
             }
-            //remove completed rows
-            
-            for y in (number_completed_rows..highest_index_completed_row_index+1).rev(){
-                println!("{} {}",y,y-number_completed_rows);
-                placed_blocks[y] = placed_blocks[y-number_completed_rows];
-            }
-            //fill new empty top rows
-            for y in 0..number_completed_rows{
-                placed_blocks[y] = [None;BLOCK_W];
-            }
+            self.remove_complete_rows(placed_blocks,score);
 
             self.random_reset();
         }
+        false
     }
-    
+
+    pub fn remove_complete_rows(&mut self,placed_blocks:&mut [[Option<Color>;BLOCK_W];BLOCK_H],score:&mut usize){
+        //check for complete rows
+        let mut number_completed_rows:usize = 0;
+        let mut highest_index_completed_row_index:usize = 0;
+        for y in self.pos.y as usize..(((self.pos.y+self.height)) as usize).min(BLOCK_H){
+            let mut completed_row = true;
+            for x in 0..BLOCK_W{
+                if placed_blocks[y][x] == None{
+                    completed_row = false;
+                    break;
+                }
+            }
+            if completed_row{
+                number_completed_rows +=1;
+                highest_index_completed_row_index = y
+            }
+        }
+        //remove completed rows
+        
+        for y in (number_completed_rows..highest_index_completed_row_index+1).rev(){
+            placed_blocks[y] = placed_blocks[y-number_completed_rows];
+        }
+        //fill new empty top rows
+        for y in 0..number_completed_rows{
+            *score += 1;
+            placed_blocks[y] = [None;BLOCK_W]; 
+        }
+       
+    }
     pub fn move_right(&mut self,placed_blocks:&mut [[Option<Color>;BLOCK_W];BLOCK_H]){
         if ((self.pos.x+self.width) as i32) < (BLOCK_W as i32){
                 self.pos.x += 1.0;
