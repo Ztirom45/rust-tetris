@@ -112,24 +112,41 @@ impl MovebleTile{
     pub fn remove_complete_rows(&mut self,placed_blocks:&mut [[Option<Color>;BLOCK_W];BLOCK_H],score:&mut usize){
         //check for complete rows
         let mut number_completed_rows:usize = 0;
-        let mut highest_index_completed_row_index:usize = 0;
+        let mut completed_rows:Vec<usize> = vec![];
         for y in self.pos.y as usize..(((self.pos.y+self.height)) as usize).min(BLOCK_H){
-            let mut completed_row = true;
+            let mut row_is_completed = true;
             for x in 0..BLOCK_W{
                 if placed_blocks[y][x] == None{
-                    completed_row = false;
+                    row_is_completed = false;
                     break;
                 }
             }
-            if completed_row{
+            if row_is_completed{
                 number_completed_rows +=1;
-                highest_index_completed_row_index = y
+                completed_rows.push(y);
             }
         }
-        //remove completed rows
+        completed_rows.sort();
+        completed_rows.reverse();
         
-        for y in (number_completed_rows..highest_index_completed_row_index+1).rev(){
-            placed_blocks[y] = placed_blocks[y-number_completed_rows];
+        //remove completed rows by moving the rows above down
+        for i in 0..number_completed_rows{
+            //do for every complerted_row[i+1]..completed_row[i] intervall until i =
+            //number_completed_rows-2
+            //last interval number_of_completed_rows..completed_row[i]
+            println!("number_of_rows: {}", number_completed_rows);
+            println!("if {} <= ncr: {}",i,i <= number_completed_rows-1);
+            let interval;
+            if i < number_completed_rows-1{//every time except for the last time
+                interval = completed_rows[i+1]..completed_rows[i];
+            }else{//last interval
+                interval = number_completed_rows-1..completed_rows[i];
+            }
+            
+            for y in interval.rev(){
+                println!("{}={} / {}",y+i+1,y,BLOCK_H-1);
+                placed_blocks[y+i+1] = placed_blocks[y];
+            }
         }
         //fill new empty top rows
         for y in 0..number_completed_rows{
