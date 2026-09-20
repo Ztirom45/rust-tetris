@@ -2,13 +2,14 @@ use std::ops::Add;
 
 use sdl2::{pixels::Color, rect::Point};
 
-pub const SCREEN_W:u32 = 500;
-pub const SCREEN_H:u32 = 1200;
+pub const SCREEN_W:u32 = 400;
+pub const SCREEN_H:u32 = 960;
 pub const BLOCK_W:usize = 10;
 pub const BLOCK_H:usize = 24;
 
-pub const NORMAL_SPEED:f32 = 0.1;
-pub const SPEED_UP:f32 = 0.5;
+pub const SPEED_INCREES_PER_TICK:f32 = 0.001;
+pub const NORMAL_SPEED:f32 = 0.05;
+pub const SPEED_UP_FAKTOR:f32 = 5.0;
 
 pub const BLOCK_COLORS_LEN:usize = 5;
 pub const BLOCK_COLORS:[Color;BLOCK_COLORS_LEN] = [

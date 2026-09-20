@@ -47,5 +47,6 @@ fn main()  -> Result<(), String> {
         std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 30));
     }
     println!("score: {}",game.score);
+    println!("end_speed: {}blocks/tick blocks/sec{}",game.current_block.speed,game.current_block.speed*30.0);
     Ok(())
 }

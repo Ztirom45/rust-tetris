@@ -1,9 +1,7 @@
 use std::iter::zip;
 
 use sdl2::pixels::Color;
-use sdl2::rect::Point;
 use crate::config::*;
-use crate::game::*;
 use rand::{thread_rng, Rng};
 
 
@@ -49,20 +47,10 @@ pub struct MovebleTile{
     pub pos:FPos,
     pub speed: f32,
     pub color: Color,
+    pub speed_up: bool,
 }
 
 impl MovebleTile{
-    pub fn new()->MovebleTile{
-        MovebleTile{
-            block_positions:[FPos{x:0.0,y:0.0};4],
-            width:0.0,
-            height:0.0,
-            pos:FPos{x:0.0,y:0.0},
-            speed:NORMAL_SPEED,
-            color:Color::RGB(255, 0, 0),
-        }
-    }
-    
     pub fn random_new()->Self{
         let mut rng = thread_rng();
         let sub_tile = &BLOCK_CONSTALATIONS[rng.gen_range(0..BLOCK_CONSTALATIONS_LEN)];
@@ -72,6 +60,7 @@ impl MovebleTile{
             width:sub_tile.width,
             pos:FPos{x:rng.gen_range(0..BLOCK_W as i32-4) as f32,y:0.0},
             speed:NORMAL_SPEED,
+            speed_up:false,
             color:BLOCK_COLORS[rng.gen_range(0..BLOCK_COLORS_LEN)],
         }
     }
@@ -83,6 +72,7 @@ impl MovebleTile{
         self.height = sub_tile.height;
         self.pos = FPos{x:rng.gen_range(0..BLOCK_W as i32-4) as f32,y:0.0};
         self.speed = NORMAL_SPEED;
+        self.speed_up = false;
         self.color = BLOCK_COLORS[rng.gen_range(0..BLOCK_COLORS_LEN)];
 
     }
@@ -90,12 +80,19 @@ impl MovebleTile{
     //returns if the game should continue
     // false -> continue; true -> stop
     pub fn update(&mut self,placed_blocks:&mut [[Option<Color>;BLOCK_W];BLOCK_H], score:&mut usize) -> bool{
-        self.pos.y +=self.speed;
+        //handle movement
+        self.speed += SPEED_INCREES_PER_TICK;
+        if self.speed_up{
+            self.pos.y +=self.speed*SPEED_UP_FAKTOR;
+        }else{
+            self.pos.y +=self.speed;
+        }
+
         if self.check_collision(placed_blocks){
             //place block
             for pos in self.block_positions{
-                let real_pos_x = (pos.x+self.pos.x);
-                let real_pos_y = (pos.y+self.pos.y-1.0);
+                let real_pos_x = pos.x+self.pos.x;
+                let real_pos_y = pos.y+self.pos.y-1.0;
                 
                 //cheak if a block is place above the upper border
                 //if so: stop game
@@ -141,13 +138,18 @@ impl MovebleTile{
         }
        
     }
+
     pub fn move_right(&mut self,placed_blocks:&mut [[Option<Color>;BLOCK_W];BLOCK_H]){
         if ((self.pos.x+self.width) as i32) < (BLOCK_W as i32){
                 self.pos.x += 1.0;
                 //collision with other blocks check
+                //check collision for next frame,
+                //otherwise moving parts up, by timing side moves would be posible
+                self.pos.y+=self.speed;
                 if self.check_collision(placed_blocks){
                     self.pos.x-=1.0;
                 }
+                self.pos.y-=self.speed;
         }
 
     }
@@ -156,9 +158,14 @@ impl MovebleTile{
         if self.pos.x > 0.0{
                 self.pos.x -= 1.0;
                 //collision with other blocks check
+                //check collision for next frame,
+                //otherwise moving parts up, by timing side moves would be posible
+                self.pos.y+=self.speed;
+
                 if self.check_collision(placed_blocks){
                     self.pos.x-=1.0;
                 }
+                self.pos.y-=self.speed;
 
         }
 
@@ -168,13 +175,13 @@ impl MovebleTile{
         //check if rotating, which means swaping width and height would let a part leave the
         //game border
         //TODO: collision with other parts 
-        if ((self.pos.x+self.height) as i32) >= (BLOCK_W as i32){
+        if ((self.pos.x+self.height) as i32) > (BLOCK_W as i32){
             return;
         }
 
         let old_height = self.height;
         let old_width = self.width;
-        let mut old_block_positions:[FPos;4] = self.block_positions;
+        let old_block_positions:[FPos;4] = self.block_positions;
         for (new_pos,old_pos) in zip(self.block_positions.as_mut(),old_block_positions){
             new_pos.y = old_pos.x;
             new_pos.x = old_height-1.0-old_pos.y;

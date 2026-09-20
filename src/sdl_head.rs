@@ -1,6 +1,5 @@
-use sdl2::{EventPump, event::Event, keyboard::{Keycode, Scancode}, pixels::Color, rect::Point, render::Canvas, sys::Window};
+use sdl2::{EventPump, event::Event, keyboard::{Keycode, Scancode}, pixels::Color, rect::Point};
 
-use crate::config::*;
 use crate::game::*;
 
 pub fn sdl_draw_game(game:&Game,canvas: &mut sdl2::render::Canvas<sdl2::video::Window>){
@@ -31,9 +30,9 @@ pub fn sdl_draw_game(game:&Game,canvas: &mut sdl2::render::Canvas<sdl2::video::W
 pub fn sdl_handle_events(game:&mut Game, event_pump:&mut EventPump) -> bool{
     //speed up downward Movement
     if event_pump.keyboard_state().is_scancode_pressed(Scancode::S){
-        game.current_block.speed = SPEED_UP; 
+        game.current_block.speed_up = true; 
     }else{
-        game.current_block.speed = NORMAL_SPEED;
+        game.current_block.speed_up = false; 
     }
 
     for event in event_pump.poll_iter() {
