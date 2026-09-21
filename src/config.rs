@@ -7,8 +7,8 @@ pub const SCREEN_H:u32 = 960;
 pub const BLOCK_W:usize = 10;
 pub const BLOCK_H:usize = 24;
 
-pub const SPEED_INCREES_PER_TICK:f32 = 0.005;
-pub const NORMAL_SPEED:f32 = 0.02*5.0;
+pub const SPEED_INCREES_PER_FULL_ROW:f32 = 0.01;
+pub const NORMAL_SPEED:f32 = 0.1;
 pub const SPEED_UP_FAKTOR:f32 = 5.0;
 pub const MAX_SPEED:f32 = 1.0; // can't be bigger than 1.0 otherwise: collision bugs
 
