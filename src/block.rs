@@ -11,7 +11,7 @@ pub struct Tile{
     pub height:f32,//only natural numbers or zero in float notation
 }
 
-pub const BLOCK_CONSTALATIONS_LEN:usize = 6;
+pub const BLOCK_CONSTALATIONS_LEN:usize = 7;
 pub const BLOCK_CONSTALATIONS:[Tile;BLOCK_CONSTALATIONS_LEN] = [
     // ##
     // ##
@@ -34,7 +34,12 @@ pub const BLOCK_CONSTALATIONS:[Tile;BLOCK_CONSTALATIONS_LEN] = [
 
     // ##
     //  ##
-    Tile{block_positions:[FPos{x:0.0,y:0.0},FPos{x:1.0,y:0.0},FPos{x:2.0,y:1.0},FPos{x:1.0,y:1.0}],width:3.0,height:2.0}
+    Tile{block_positions:[FPos{x:0.0,y:0.0},FPos{x:1.0,y:0.0},FPos{x:2.0,y:1.0},FPos{x:1.0,y:1.0}],width:3.0,height:2.0},
+
+    //###
+    // #
+    Tile{block_positions:[FPos{x:0.0,y:0.0},FPos{x:1.0,y:0.0},FPos{x:2.0,y:0.0},FPos{x:1.0,y:1.0}],width:3.0,height:2.0}
+
 ];
 
 
