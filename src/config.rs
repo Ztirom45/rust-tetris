@@ -7,7 +7,7 @@ pub const SCREEN_H:u32 = 960;
 pub const BLOCK_W:usize = 10;
 pub const BLOCK_H:usize = 24;
 
-pub const SPEED_INCREES_PER_TICK:f32 = 0.001;
+pub const SPEED_INCREES_PER_TICK:f32 = 0.005;
 pub const NORMAL_SPEED:f32 = 0.05;
 pub const SPEED_UP_FAKTOR:f32 = 5.0;
 
