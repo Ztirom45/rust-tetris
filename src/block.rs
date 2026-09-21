@@ -77,16 +77,19 @@ impl MovebleTile{
 
     }
     
+    pub fn get_speed(&mut self) -> f32{
+        if self.speed_up{
+            return (self.speed*SPEED_UP_FAKTOR).min(MAX_SPEED);
+        }
+        self.speed.min(MAX_SPEED)
+    }
+
     //returns if the game should continue
     // false -> continue; true -> stop
     pub fn update(&mut self,placed_blocks:&mut [[Option<Color>;BLOCK_W];BLOCK_H], score:&mut usize) -> bool{
         //handle movement
         self.speed += SPEED_INCREES_PER_TICK;
-        if self.speed_up{
-            self.pos.y +=self.speed*SPEED_UP_FAKTOR;
-        }else{
-            self.pos.y +=self.speed;
-        }
+        self.pos.y += self.get_speed();
 
         if self.check_collision(placed_blocks){
             //place block
@@ -158,11 +161,13 @@ impl MovebleTile{
                 //collision with other blocks check
                 //check collision for next frame,
                 //otherwise moving parts up, by timing side moves would be posible
-                self.pos.y+=self.speed;
+                self.speed+=SPEED_INCREES_PER_TICK;
+                self.pos.y+=self.get_speed();
                 if self.check_collision(placed_blocks){
                     self.pos.x-=1.0;
                 }
-                self.pos.y-=self.speed;
+                self.pos.y-=self.get_speed();
+                self.speed-=SPEED_INCREES_PER_TICK;
         }
 
     }
@@ -173,12 +178,14 @@ impl MovebleTile{
                 //collision with other blocks check
                 //check collision for next frame,
                 //otherwise moving parts up, by timing side moves would be posible
-                self.pos.y+=self.speed;
+                self.speed+=SPEED_INCREES_PER_TICK;
+                self.pos.y+=self.get_speed();
 
                 if self.check_collision(placed_blocks){
-                    self.pos.x-=1.0;
+                    self.pos.x+=1.0;
                 }
-                self.pos.y-=self.speed;
+                self.pos.y-=self.get_speed();
+                self.speed-=SPEED_INCREES_PER_TICK;
 
         }
 

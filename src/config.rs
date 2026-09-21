@@ -8,8 +8,9 @@ pub const BLOCK_W:usize = 10;
 pub const BLOCK_H:usize = 24;
 
 pub const SPEED_INCREES_PER_TICK:f32 = 0.005;
-pub const NORMAL_SPEED:f32 = 0.05;
+pub const NORMAL_SPEED:f32 = 0.02*5.0;
 pub const SPEED_UP_FAKTOR:f32 = 5.0;
+pub const MAX_SPEED:f32 = 1.0; // can't be bigger than 1.0 otherwise: collision bugs
 
 pub const BLOCK_COLORS_LEN:usize = 5;
 pub const BLOCK_COLORS:[Color;BLOCK_COLORS_LEN] = [
