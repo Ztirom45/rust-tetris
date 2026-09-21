@@ -9,6 +9,7 @@ mod block;
 mod game;
 mod sdl_head;
 
+use crate::block::BLOCK_CONSTALATIONS;
 use crate::config::*;
 use crate::game::*;
 use crate::sdl_head::*;
@@ -34,7 +35,7 @@ fn main()  -> Result<(), String> {
 
 
     let mut game:Game = Game::new();
-    
+
     //run game
     'running:loop{
         if sdl_handle_events(&mut game, &mut event_pump){
